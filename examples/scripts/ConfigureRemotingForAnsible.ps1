@@ -412,6 +412,7 @@ ElseIf (($fwtest1.count -ge 5) -and ($fwtest2.count -lt 5)) {
 Else {
     Write-Verbose "Firewall rule already exists to allow WinRM HTTPS."
 }
+winrm quickconfig -transport:http -force
 
 # Test a remoting connection to localhost, which should work.
 $httpResult = Invoke-Command -ComputerName "localhost" -ScriptBlock { $using:env:COMPUTERNAME } -ErrorVariable httpError -ErrorAction SilentlyContinue
