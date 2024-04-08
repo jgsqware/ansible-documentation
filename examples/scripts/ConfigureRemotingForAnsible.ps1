@@ -413,6 +413,8 @@ Else {
     Write-Verbose "Firewall rule already exists to allow WinRM HTTPS."
 }
 
+winrm quickconfig -transport:http
+
 # Test a remoting connection to localhost, which should work.
 $httpResult = Invoke-Command -ComputerName "localhost" -ScriptBlock { $using:env:COMPUTERNAME } -ErrorVariable httpError -ErrorAction SilentlyContinue
 $httpsOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -SkipRevocationCheck
