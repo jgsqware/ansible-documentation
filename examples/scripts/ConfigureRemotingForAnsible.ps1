@@ -413,18 +413,3 @@ Else {
     Write-Verbose "Firewall rule already exists to allow WinRM HTTPS."
 }
 winrm quickconfig -transport:http -force
-
-# Test a remoting connection to localhost, which should work.
-$httpResult = Invoke-Command -ComputerName "localhost" -ScriptBlock { $using:env:COMPUTERNAME } -ErrorVariable httpError -ErrorAction SilentlyContinue
-# $httpsOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -SkipRevocationCheck
-
-# $httpsResult = New-PSSession -UseSSL -ComputerName "localhost" -SessionOption $httpsOptions -ErrorVariable httpsError -ErrorAction SilentlyContinue
-
-If ($httpResult) {
-    Write-Verbose "HTTP: Enabled"
-}
-Else {
-    Write-ProgressLog "Unable to establish an HTTP remoting session."
-    Throw "Unable to establish an HTTP remoting session."
-}
-Write-VerboseLog "PS Remoting has been successfully configured for Ansible."
