@@ -415,21 +415,15 @@ Else {
 
 # Test a remoting connection to localhost, which should work.
 $httpResult = Invoke-Command -ComputerName "localhost" -ScriptBlock { $using:env:COMPUTERNAME } -ErrorVariable httpError -ErrorAction SilentlyContinue
-$httpsOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -SkipRevocationCheck
+# $httpsOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -SkipRevocationCheck
 
-$httpsResult = New-PSSession -UseSSL -ComputerName "localhost" -SessionOption $httpsOptions -ErrorVariable httpsError -ErrorAction SilentlyContinue
+# $httpsResult = New-PSSession -UseSSL -ComputerName "localhost" -SessionOption $httpsOptions -ErrorVariable httpsError -ErrorAction SilentlyContinue
 
-If ($httpResult -and $httpsResult) {
-    Write-Verbose "HTTP: Enabled | HTTPS: Enabled"
-}
-ElseIf ($httpsResult -and !$httpResult) {
-    Write-Verbose "HTTP: Disabled | HTTPS: Enabled"
-}
-ElseIf ($httpResult -and !$httpsResult) {
-    Write-Verbose "HTTP: Enabled | HTTPS: Disabled"
+If ($httpResult) {
+    Write-Verbose "HTTP: Enabled"
 }
 Else {
-    Write-ProgressLog "Unable to establish an HTTP or HTTPS remoting session."
-    Throw "Unable to establish an HTTP or HTTPS remoting session."
+    Write-ProgressLog "Unable to establish an HTTP remoting session."
+    Throw "Unable to establish an HTTP remoting session."
 }
 Write-VerboseLog "PS Remoting has been successfully configured for Ansible."
